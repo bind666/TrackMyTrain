@@ -20,6 +20,18 @@ const Running = () => {
         }
     }, [searchParams]);
 
+    const handleTextToSpeech = (text) => {
+        if ("speechSynthesis" in window) {
+            const speech = new SpeechSynthesisUtterance("You are reached to "+text);
+            speech.lang = "hi-IN"; // Change language if needed
+            speech.rate = 1; // Adjust speed (0.1 to 10)
+            speech.pitch = 1; // Adjust pitch (0 to 2)
+            window.speechSynthesis.speak(speech);
+        } else {
+            alert("Your browser does not support text-to-speech!");
+        }
+    }
+
     // Fetch train status
     const fetchTrainStatus = async (trainNum) => {
         setLoading(true);
@@ -77,10 +89,13 @@ const Running = () => {
 
                 <div className="mt-4">
                     {currentStation && (
-                        <div className="mb-4">
+
+                        <div className="mb-4 flex justify-between">
                             <p className="text-lg font-semibold text-blue-600">
                                 🚆 Currently at: {currentStation.stationName} ({currentStation.departureTime || "N/A"})
                             </p>
+
+                            <button className="border-2 border-black px-6 py-2 rounded-xl" onClick={()=>handleTextToSpeech(currentStation.stationName)}>Voice</button>
                         </div>
                     )}
                     <Table columns={columns} dataSource={trainData} pagination={false} bordered />

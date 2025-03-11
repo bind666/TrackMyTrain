@@ -1,8 +1,14 @@
 import { Link, NavLink } from 'react-router-dom'
 import { MdLogout } from "react-icons/md";
 import { TbTrain } from "react-icons/tb";
+import { useAuth } from '@clerk/clerk-react';
 
 export default function Header() {
+    const { signOut } = useAuth();
+    const signedOut = () => {
+        signOut();
+    }
+
     return (
         <header className="sticky z-50 top-0 shadow-sm">
             <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5">
@@ -16,7 +22,7 @@ export default function Header() {
                         <Link
                             to="#"
                         >
-                            <button className='flex'><MdLogout size={25} />Logout</button>
+                            <button onClick={signedOut} className='flex'><MdLogout size={25} />Logout</button>
                         </Link>
 
                     </div>
